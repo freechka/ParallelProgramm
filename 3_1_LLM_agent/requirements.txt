@@ -6,3 +6,4 @@ pytest
 pypdf
 pdfplumber
 ollama
+pytest-cov
