@@ -72,7 +72,15 @@ class TestTimestampTool:
 # ============ ТЕСТЫ С ОLLAMA (интеграционные) ============
 # Эти тесты проверяют, что агент может использовать TimestampTool
 
-@pytest.mark.integration
+import pytest
+import os
+
+# ... другие тесты ...
+
+@pytest.mark.skipif(
+    os.environ.get("CI") == "true",
+    reason="Skipping integration test in CI environment"
+)
 def test_llm_agent_with_timestamp():
     """Интеграционный тест: LLMAgent использует TimestampTool"""
     try:
@@ -81,12 +89,11 @@ def test_llm_agent_with_timestamp():
         
         agent = LLMAgent(local=True, ollama_model="qwen3.5:0.8b")
         
-        # Проверяем, что агент может ответить на вопрос о времени
         query = "Какое сегодня число? Напиши только дату в формате ГГГГ-ММ-ДД"
         response = agent.process_query(query)
         
-        # Проверяем, что ответ содержит дату (минимум 4 цифры год)
         assert any(char.isdigit() for char in response), "Ответ должен содержать цифры"
+        print(f"✅ Тест пройден! Ответ: {response}")
         
-    except ImportError:
-        pytest.skip("LLMAgent не найден, пропускаем интеграционный тест")
+    except ImportError as e:
+        pytest.skip(f"Модуль не найден: {e}")
