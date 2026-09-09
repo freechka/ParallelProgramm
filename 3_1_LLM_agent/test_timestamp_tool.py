@@ -70,12 +70,7 @@ class TestTimestampTool:
 
 
 # ============ ТЕСТЫ С ОLLAMA (интеграционные) ============
-# Эти тесты проверяют, что агент может использовать TimestampTool
-
-import pytest
 import os
-
-# ... другие тесты ...
 
 @pytest.mark.skipif(
     os.environ.get("CI") == "true",
